@@ -5,7 +5,7 @@
   - name: installing my sql server
     ansible.builtin.package:
       name: mysql-server
-      state: present
+      state: absents
   - name: start my sql server
     ansible.builtin.service:
       name: mysqld
