@@ -8,6 +8,6 @@
       state: present
   - name: start my sql server
     ansible.builtin.service:
-      name: mysql-server
+      name: mysql
       state: started
       enabled: yes
