@@ -15,7 +15,7 @@
     ansible.builtin.package:
       name: item
       state: present
-      loop:
+    loop:
         - nodejs
         - mysql
   
@@ -49,7 +49,6 @@
     ansible.builtin.pip:
       name: PyMySQL
       executable: pip3.9
-  - name: install mysql
 
   - name: import the mysql data into mysql
     community.mysql.mysql_db:
