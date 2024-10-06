@@ -1,0 +1,53 @@
+- name: configuring backend
+  hosts: backend
+  become: yes
+  vars:
+    mysql_login_password: Amar@123
+    host: mysql.expensemind.online
+  tasks:
+  - name: disable nodejs 18
+    ansible.builtin.command: dnf module disable nodejs -y
+
+  - name: enable nodejs 20
+    ansible.builtin.command: dnf module enable nodejs -y
+
+  - name: install nodejs
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+  
+  - name: create expense user
+    ansible.builtin.user:
+      name: expense
+  - name: create app directory
+    ansible.builtin.file:
+      path: /app
+      state: directory
+
+  - name: download file 
+    ansible.builtin.get_url:
+      url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+      dest: /tmp/backend.zip
+
+  - name: extract file
+    ansible.builtin.unarchive:
+      src: /tmp/backend.zip
+      dest: /app
+      remote_src: yes
+  - name: install npm package
+    ansible.builtin.command: npm install
+    args:
+      chdir: /app
+  - name: copy the backend.service file
+    ansible.builtin.copy:
+      src: backend.service
+      dest: /etc/systemd/system/backend.service
+  - name: import the mysql data into mysql
+
+    community.mysql.mysql_db:
+      login_user: root
+      login_password: "{{ mysql_login_password}}"
+      login_host: "{{ host }}"
+      target: /app/schema/backend.sql
+      state: import
+      name: all
