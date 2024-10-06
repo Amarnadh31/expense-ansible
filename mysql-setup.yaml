@@ -7,8 +7,11 @@
   tasks:
   - name: installing my sql server
     ansible.builtin.package:
-      name: mysql-server
+      name: item
       state: present
+    loop:
+    - mysql-server
+    - PyMySQL
   - name: start my sql server
     ansible.builtin.service:
       name: mysqld
