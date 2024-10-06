@@ -28,8 +28,11 @@
   
   - name: install pymysql
     ansible.builtin.pip:
-      name: PyMySQL
+      name: item
       executable: pip3.9
+    loops:
+    - cryptography
+    - PyMySQL
 
   - name: setup the root password for mysql
     ansible.builtin.command: mysql_secure_installation --set-root-pass Amar@123
