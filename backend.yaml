@@ -13,8 +13,11 @@
 
   - name: install nodejs
     ansible.builtin.package:
-      name: nodejs
+      name: item
       state: present
+      loop:
+        - nodejs
+        - mysql
   
   - name: create expense user
     ansible.builtin.user:
@@ -46,6 +49,7 @@
     ansible.builtin.pip:
       name: PyMySQL
       executable: pip3.9
+  - name: install mysql
 
   - name: import the mysql data into mysql
     community.mysql.mysql_db:
