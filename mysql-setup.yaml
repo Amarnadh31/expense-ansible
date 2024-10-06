@@ -3,7 +3,7 @@
   become: yes
   vars:
     mysql_login_password: Amar@123
-    host: mysql
+    host: mysql.expensemind.online
   tasks:
   - name: installing my sql server
     ansible.builtin.package:
